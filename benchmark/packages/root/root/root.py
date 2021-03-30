@@ -1,5 +1,5 @@
-from dep1 import Cls
-import dep2
+from dep1.dep1 import Cls
+from dep2 import dep2
 
 class A(Cls):
     def fn(self):
