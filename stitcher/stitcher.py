@@ -93,7 +93,6 @@ class Stitcher:
                     resolved = self.cgs[parent_resolved.get_product()].get_node(
                         parent_resolved.get_modname(),
                         parent_resolved.get_callable() + "." + name)
-                    print(resolved)
 
             if resolved:
                 return resolved
