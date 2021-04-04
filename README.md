@@ -57,8 +57,6 @@ The benchmark directory consists of the following items:
 In order to execute the benchmark:
 
 ```
->>> cd benchmark
->>> ./generate.sh
 >>> pycg-stitch call-graphs/* --output out.json
 ```
 
