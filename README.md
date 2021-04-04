@@ -4,7 +4,7 @@ In this repository you can find the implementation of a stitcher for Python
 call graphs written in Python along with a benchmark to test its functionality.
 
 Contents:
-* [pypi-stitch](pypi-stitch): The source code for the stitcher.
+* [stitcher](stitcher): The source code for the stitcher.
 * [benchmark](benchmark): A minimal benchmark to test the stitcher's
   functionality.
 
@@ -19,8 +19,8 @@ From the root directory, run:
 ## Usage
 
 ```
->>> pypi-stitch --help
-usage: pypi-stitch [-h] [-o OUTPUT] [call_graph ...]
+>>> pycg-stitch --help
+usage: pycg-stitch [-h] [-o OUTPUT] [call_graph ...]
 
 positional arguments:
   call_graph            Paths to call graphs to be stitched together in JSON format
@@ -59,7 +59,7 @@ In order to execute the benchmark:
 ```
 >>> cd benchmark
 >>> ./generate.sh
->>> pypi-stitch call-graphs/* --output out.json
+>>> pycg-stitch call-graphs/* --output out.json
 ```
 
 The `out.json` file should contain the following output:

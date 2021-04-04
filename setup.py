@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 def setup_package():
     setup(
-        name='pypi-stitch',
+        name='pycg-stitch',
         version='0.0.1',
         description='Stitcher for FASTEN Python call graphs',
         license='Apache Software License',
@@ -10,7 +10,7 @@ def setup_package():
         install_requires=[],
         entry_points = {
             'console_scripts': [
-                'pypi-stitch=stitcher.__main__:main',
+                'pycg-stitch=stitcher.__main__:main',
             ],
         },
         classifiers=[
