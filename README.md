@@ -39,7 +39,12 @@ optional arguments:
 
 ## Benchmark
 
-The benchmark directory consists of the following items:
+The benchmark directory consists of a micro- and a macro-benchmark.
+
+### Micro-benchmark
+
+The micro-benchmark is stored under `benchmark/micro` and contains the
+following:
 
 * `packages`: Contains the source code of 5 packages. Specifically it contains
   the source code of a `root` package which depends on the `dep1` and `dep2`
@@ -57,7 +62,7 @@ The benchmark directory consists of the following items:
 In order to execute the benchmark:
 
 ```
->>> pycg-stitch call-graphs/* --output out.json
+>>> pycg-stitch benchmark/micro/call-graphs/* --output out.json
 ```
 
 The `out.json` file should contain the following output:
@@ -96,3 +101,16 @@ The `out.json` file should contain the following output:
   ]
 }
 ```
+
+### Macro-benchmark
+
+The macro-benchmark is stored under the `benchmark/macro` directory. It contains
+the call graphs for the [fabric](https://github.com/fabric/fabric) package and
+its dependencies. The macro-benchmark contains the following items:
+
+* `call-graphs`: The call-graphs for fabric and its dependencies.
+* `collect.py`: A Python script that takes as a parameter a package and
+  downloads it along with its dependencies. Then it generates their call graphs
+  using PyCG and stores them under the `call-graphs` directory.
+* `stitched.json`: The expected stitched call graph for fabric and its
+  dependencies.
