@@ -70,35 +70,48 @@ The `out.json` file should contain the following output:
 ```
 {
   "edges": [
-    [
-      "//dep1/dep1.dep1/Cls.dep_fn()",
-      "//trans-dep2/trans_dep2.trans_dep2/smth()"
-    ],
-    [
-      "//root/root.root/",
-      "//root/root.root/A.fn()"
-    ],
-    [
-      "//root/root.root/",
-      "//root/root.root/func2()"
-    ],
-    [
-      "//root/root.root/",
-      "//trans-dep1/trans_dep1.trans_dep1/ClsPar.__init__()"
-    ],
-    [
-      "//root/root.root/A.fn()",
-      "//dep1/dep1.dep1/Cls.dep_fn()"
-    ],
-    [
-      "//root/root.root/func2()",
-      "//dep2/dep2.dep2/func()"
-    ],
-    [
-      "//trans-dep1/trans_dep1.trans_dep1/ClsPar.__init__()",
-      "//trans-dep1/trans_dep1.trans_dep1/fun()"
-    ]
-  ]
+    [1, 2],
+    [3, 4],
+    [3, 5],
+    [3, 6],
+    [4, 1],
+    [5, 7],
+    [6, 8]
+  ],
+  "nodes": {
+    "6": {
+      "URI": "fasten://dep1$1.0/dep1.dep1/Cls.dep_fn()",
+      "metadata": {}
+    },
+    "1": {
+      "URI": "fasten://trans-dep2$1.0/trans_dep2.trans_dep2/smth()",
+      "metadata": {}
+    },
+    "2": {
+      "URI": "fasten://root$1.0/root.root/",
+      "metadata": {}
+    },
+    "3": {
+      "URI": "fasten://root$1.0/root.root/A.fn()",
+      "metadata": {}
+    },
+    "4": {
+      "URI": "fasten://root$1.0/root.root/func2()",
+      "metadata": {}
+    },
+    "5": {
+      "URI": "fasten://trans-dep1$1.0/trans_dep1.trans_dep1/ClsPar.__init__()",
+      "metadata": {}
+    },
+    "7": {
+      "URI": "fasten://dep2$1.0/dep2.dep2/func()",
+      "metadata": {}
+    },
+    "8": {
+      "URI": "fasten://trans-dep1$1.0/trans_dep1.trans_dep1/fun()",
+      "metadata": {}
+    }
+  }
 }
 ```
 
