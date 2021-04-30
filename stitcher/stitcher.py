@@ -29,18 +29,29 @@ from stitcher.cg import CallGraph
 class Stitcher:
     def __init__(self, call_graph_paths):
         self.cgs = {}
-        self.id_cnt = 1
+        self.id_cnt = 0
         self.node_to_id = {}
         self.stitched = {
             "edges": [],
             "nodes": {}
         }
 
+        self.nodes_cnt = 0
+        self.edges_cnt = 0
+        self.resolved_cnt = 0
+        self.edges_cnt_no_builtin = 0
+
         self._parse_cgs(call_graph_paths)
 
     def stitch(self):
         for product, cg in self.cgs.items():
-            for src, dst in cg.get_internal_calls():
+            internal_calls = cg.get_internal_calls()
+            external_calls = cg.get_external_calls()
+            self.edges_cnt += len(internal_calls) + len(external_calls)
+            self.edges_cnt_no_builtin += len(internal_calls) + len(external_calls)
+            self.resolved_cnt += len(internal_calls)
+
+            for src, dst in internal_calls:
                 self._assign_id(src.to_string())
                 self._assign_id(dst.to_string())
                 self.stitched["edges"].append([
@@ -48,9 +59,13 @@ class Stitcher:
                     self.node_to_id[dst.to_string()],
                 ])
 
-            for src, dst in cg.get_external_calls():
+            for src, dst in external_calls:
                 resolved = self._resolve(dst)
+                if ".builtin" in dst.to_string():
+                    self.edges_cnt_no_builtin -= 1
+
                 if resolved:
+                    self.resolved_cnt += 1
                     self._assign_id(src.to_string())
                     self._assign_id(resolved.to_string())
                     self.stitched["edges"].append([
@@ -58,10 +73,15 @@ class Stitcher:
                         self.node_to_id[resolved.to_string()],
                     ])
 
+        self.nodes_cnt = self.id_cnt
         for node, id in self.node_to_id.items():
             self.stitched["nodes"][id] = {"URI": node, "metadata": {}}
 
     def output(self):
+        print ("Total Number of Nodes: {}".format(self.nodes_cnt))
+        print ("Total Number of Edges: {}".format(self.edges_cnt))
+        print ("Total Number of Edges Excluding Builtins: {}".format(self.edges_cnt_no_builtin))
+        print ("Total Number of Resolved Edges: {}".format(self.resolved_cnt))
         return self.stitched
 
     def _parse_cgs(self, paths):
