@@ -32,6 +32,7 @@ class CallGraph:
         self.id_to_node = {}
 
         self.product = self.cg["product"]
+        self.version = self.cg["version"]
 
         self._parse_cg()
 
@@ -50,7 +51,8 @@ class CallGraph:
         def iterate_mods(d, internal):
             for mod_id, data in d.items():
                 if internal:
-                    mod_node = Node(mod_id, product=self.product)
+                    mod_node = Node(mod_id, product=self.product,
+                                    version=self.version)
                     modname = mod_node.get_modname()
                 else:
                     modname = mod_id
@@ -61,9 +63,11 @@ class CallGraph:
                     if info["metadata"].get("superClasses", None) != None:
                         super_cls = []
                         for cls in info["metadata"]["superClasses"]:
-                            super_cls.append(Node(cls, self.product))
+                            super_cls.append(Node(cls, product=self.product,
+                                                        version=self.version))
 
-                    node = Node(info["namespace"], self.product, super_cls=super_cls)
+                    node = Node(info["namespace"], product=self.product,
+                                super_cls=super_cls, version=self.version)
 
                     self.id_to_node[id] = node
                     if node.get_modname():

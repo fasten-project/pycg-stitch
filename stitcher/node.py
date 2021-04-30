@@ -22,9 +22,10 @@
 # under the License.
 #
 class Node:
-    def __init__(self, uri_str, product=None, super_cls=None):
+    def __init__(self, uri_str, product=None, super_cls=None, version=None):
         self.uri_str = uri_str
         self.product = product
+        self.version = version
         self.super_cls = super_cls or []
 
         if len(uri_str.split("/")) == 5:
@@ -53,6 +54,9 @@ class Node:
     def get_product(self):
         return self.product
 
+    def get_version(self):
+        return self.version
+
     def get_modname(self):
         return self.modname
 
@@ -63,7 +67,11 @@ class Node:
         return self.super_cls
 
     def to_string(self):
-        uri = "//" + self.product + "/" + self.modname + "/" + self.callable
+        uri = "fasten://" + self.product
+        if self.version:
+            uri += "$" + self.version
+        uri += "/" + self.modname + "/" + self.callable
+
         if self.is_func:
             uri += "()"
         return uri

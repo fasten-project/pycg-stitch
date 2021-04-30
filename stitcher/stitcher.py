@@ -29,10 +29,11 @@ from stitcher.cg import CallGraph
 class Stitcher:
     def __init__(self, call_graph_paths):
         self.cgs = {}
-        self.id_cnt = 0
+        self.id_cnt = 1
         self.node_to_id = {}
         self.stitched = {
-            "edges": []
+            "edges": [],
+            "nodes": {}
         }
 
         self._parse_cgs(call_graph_paths)
@@ -43,8 +44,8 @@ class Stitcher:
                 self._assign_id(src.to_string())
                 self._assign_id(dst.to_string())
                 self.stitched["edges"].append([
-                    src.to_string(),
-                    dst.to_string()
+                    self.node_to_id[src.to_string()],
+                    self.node_to_id[dst.to_string()],
                 ])
 
             for src, dst in cg.get_external_calls():
@@ -53,9 +54,12 @@ class Stitcher:
                     self._assign_id(src.to_string())
                     self._assign_id(resolved.to_string())
                     self.stitched["edges"].append([
-                        src.to_string(),
-                        resolved.to_string()
+                        self.node_to_id[src.to_string()],
+                        self.node_to_id[resolved.to_string()],
                     ])
+
+        for node, id in self.node_to_id.items():
+            self.stitched["nodes"][id] = {"URI": node, "metadata": {}}
 
     def output(self):
         return self.stitched
