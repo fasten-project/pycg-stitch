@@ -60,11 +60,9 @@ class Stitcher:
                 ])
 
             for src, dst in external_calls:
-                resolved = self._resolve(dst)
                 if ".builtin" in dst.to_string():
                     self.edges_cnt_no_builtin -= 1
-
-                if resolved:
+                for resolved in self._resolve(dst):
                     self.resolved_cnt += 1
                     self._assign_id(src.to_string())
                     self._assign_id(resolved.to_string())
@@ -116,11 +114,9 @@ class Stitcher:
                     if self.cgs[product].get_node(modname, parent_fnname):
                         fn = self._resolve_mro(product, modname, parent_fnname, callbl[-1])
                         if fn:
-                            return fn
+                            yield fn
             elif actual.is_func or actual.is_class:
-                return actual
-
-        return None
+                yield actual
 
     def _resolve_mro(self, product, modname, cls, name):
         if not self.cgs.get(product, None):
