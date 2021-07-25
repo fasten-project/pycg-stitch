@@ -10,6 +10,12 @@ def main():
         nargs="*",
         help="Paths to call graphs to be stitched together in JSON format")
     parser.add_argument(
+        "--simple",
+        action="store_true",
+        help="Output in simple format",
+        default=False
+    )
+    parser.add_argument(
         "-o",
         "--output",
         help="Output path",
@@ -18,7 +24,7 @@ def main():
 
     args = parser.parse_args()
 
-    stitcher = Stitcher(args.call_graph)
+    stitcher = Stitcher(args.call_graph, args.simple)
     stitcher.stitch()
 
     output = json.dumps(stitcher.output())

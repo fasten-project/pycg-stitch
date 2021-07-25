@@ -66,9 +66,12 @@ class Node:
     def get_class_hier(self):
         return self.super_cls
 
-    def to_string(self):
-        uri = "fasten://" + self.product
-        if self.version:
+    def to_string(self, simple=False):
+        uri = ""
+        if not simple:
+            uri += "fasten:"
+        uri += "//" + self.product
+        if self.version and not simple:
             uri += "$" + self.version
         uri += "/" + self.modname + "/" + self.callable
 

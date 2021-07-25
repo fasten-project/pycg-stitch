@@ -27,7 +27,8 @@ import json
 from stitcher.cg import CallGraph
 
 class Stitcher:
-    def __init__(self, call_graph_paths):
+    def __init__(self, call_graph_paths, simple):
+        self.simple = simple
         self.cgs = {}
         self.id_cnt = 0
         self.node_to_id = {}
@@ -52,11 +53,11 @@ class Stitcher:
             self.resolved_cnt += len(internal_calls)
 
             for src, dst in internal_calls:
-                self._assign_id(src.to_string())
-                self._assign_id(dst.to_string())
+                self._assign_id(src.to_string(self.simple))
+                self._assign_id(dst.to_string(self.simple))
                 self.stitched["edges"].append([
-                    self.node_to_id[src.to_string()],
-                    self.node_to_id[dst.to_string()],
+                    self.node_to_id[src.to_string(self.simple)],
+                    self.node_to_id[dst.to_string(self.simple)],
                 ])
 
             for src, dst in external_calls:
@@ -64,11 +65,11 @@ class Stitcher:
                     self.edges_cnt_no_builtin -= 1
                 for resolved in self._resolve(dst):
                     self.resolved_cnt += 1
-                    self._assign_id(src.to_string())
-                    self._assign_id(resolved.to_string())
+                    self._assign_id(src.to_string(self.simple))
+                    self._assign_id(resolved.to_string(self.simple))
                     self.stitched["edges"].append([
-                        self.node_to_id[src.to_string()],
-                        self.node_to_id[resolved.to_string()],
+                        self.node_to_id[src.to_string(self.simple)],
+                        self.node_to_id[resolved.to_string(self.simple)],
                     ])
 
         self.nodes_cnt = self.id_cnt
@@ -76,10 +77,6 @@ class Stitcher:
             self.stitched["nodes"][id] = {"URI": node, "metadata": {}}
 
     def output(self):
-        print ("Total Number of Nodes: {}".format(self.nodes_cnt))
-        print ("Total Number of Edges: {}".format(self.edges_cnt))
-        print ("Total Number of Edges Excluding Builtins: {}".format(self.edges_cnt_no_builtin))
-        print ("Total Number of Resolved Edges: {}".format(self.resolved_cnt))
         return self.stitched
 
     def _parse_cgs(self, paths):
@@ -87,7 +84,8 @@ class Stitcher:
             with open(p, "r") as f:
                 cg = json.load(f)
                 if self.cgs.get(cg["product"], None):
-                    self._err_and_exit("Cannot stitch call graphs of the same product")
+                    continue
+
                 self.cgs[cg["product"]] = CallGraph(cg)
 
     def _resolve(self, node, search_parents=True):
@@ -129,13 +127,13 @@ class Stitcher:
             if parent.get_product() == product:
                 resolved = self.cgs[product].get_node(
                     parent.get_modname(),
-                    parent.get_callable + "." + name)
+                    parent.get_callable() + "." + name)
             else:
-                parent_resolved = self._resolve(parent, search_parents=False)
-                if parent_resolved:
-                    resolved = self.cgs[parent_resolved.get_product()].get_node(
-                        parent_resolved.get_modname(),
-                        parent_resolved.get_callable() + "." + name)
+                for parent_resolved in self._resolve(parent, search_parents=False):
+                    if parent_resolved:
+                        resolved = self.cgs[parent_resolved.get_product()].get_node(
+                            parent_resolved.get_modname(),
+                            parent_resolved.get_callable() + "." + name)
 
             if resolved:
                 return resolved
