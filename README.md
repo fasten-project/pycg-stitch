@@ -128,7 +128,7 @@ its dependencies. The macro-benchmark contains the following items:
 * `stitched.json`: The expected stitched call graph for fabric and its
   dependencies.
 
-### Micro-service
+## Micro-service
 
 Deploy a micro-service that expose a REST API for stitch call-graphs.
 
