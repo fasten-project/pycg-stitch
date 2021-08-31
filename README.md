@@ -137,7 +137,14 @@ docker build -f Dockerfile -t pycg-stitch-api .
 docker run -p 5001:5000 pycg-stitch-api
 ```
 
-Example request using curl:
+* Request format
+
+```
+url: http://localhost:5001/stitch
+parameter: {"product1": {...}, "product2": {...}}
+```
+
+* Example request using curl:
 
 ```bash
 echo "{ \
