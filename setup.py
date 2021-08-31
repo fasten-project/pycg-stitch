@@ -7,7 +7,7 @@ def setup_package():
         description='Stitcher for FASTEN Python call graphs',
         license='Apache Software License',
         packages=find_packages(),
-        install_requires=[],
+        install_requires=['flask'],
         entry_points = {
             'console_scripts': [
                 'pycg-stitch=stitcher.__main__:main',

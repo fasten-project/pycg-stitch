@@ -88,6 +88,10 @@ class Stitcher:
 
                 self.cgs[cg["product"]] = CallGraph(cg)
 
+    def parse_cg(self, cg_json):
+        if not self.cgs.get(cg_json["product"], None):
+            self.cgs[cg_json["product"]] = CallGraph(cg_json)
+
     def _resolve(self, node, search_parents=True):
         product = node.get_product()
         callbl = node.get_callable().split(".")

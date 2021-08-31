@@ -3,6 +3,7 @@ import json
 import argparse
 
 from stitcher.stitcher import Stitcher
+from stitcher.api import deploy
 
 def main():
     parser = argparse.ArgumentParser()
@@ -21,8 +22,19 @@ def main():
         help="Output path",
         default=None
     )
+    parser.add_argument(
+        "-a",
+        "--api",
+        action="store_true",
+        help="Deploy the server",
+        default=None
+    )
 
     args = parser.parse_args()
+
+    if args.api:
+        deploy()
+        return
 
     stitcher = Stitcher(args.call_graph, args.simple)
     stitcher.stitch()

@@ -127,3 +127,30 @@ its dependencies. The macro-benchmark contains the following items:
   using PyCG and stores them under the `call-graphs` directory.
 * `stitched.json`: The expected stitched call graph for fabric and its
   dependencies.
+
+### Micro-service
+
+Deploy a micro-service that expose a REST API for stitch call-graphs.
+
+```bash
+docker build -f Dockerfile -t pycg-stitch-api .
+docker run -p 5001:5000 pycg-stitch-api
+```
+
+Example request using curl:
+
+```bash
+echo "{ \
+    \"root\": $(cat benchmark/micro/call-graphs/root.json), \
+    \"dep1\": $(cat benchmark/micro/call-graphs/dep1.json), \
+    \"dep2\": $(cat benchmark/micro/call-graphs/dep2.json), \
+    \"trans-dep1\": $(cat benchmark/micro/call-graphs/trans-dep1.json), \
+    \"trans-dep2\": $(cat benchmark/micro/call-graphs/trans-dep2.json) \
+}" > test.json
+
+curl -X GET \
+  -H "Content-type: application/json" \
+  -H "Accept: application/json" \
+  -d @test.json \
+  "http://localhost:5001/stitch"
+```
