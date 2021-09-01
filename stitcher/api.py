@@ -7,8 +7,8 @@ from stitcher.stitcher import Stitcher
 app = Flask(__name__)
 
 
-@app.route("/stitch")
-def hello():
+@app.route("/stitch", methods = ['POST'])
+def stitch():
     content = request.json
 
     stitcher = Stitcher([], False)

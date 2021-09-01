@@ -155,7 +155,7 @@ echo "{ \
     \"trans-dep2\": $(cat benchmark/micro/call-graphs/trans-dep2.json) \
 }" > test.json
 
-curl -X GET \
+curl -X POST \
   -H "Content-type: application/json" \
   -H "Accept: application/json" \
   -d @test.json \
