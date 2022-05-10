@@ -1,3 +1,7 @@
 *.swp
 *.swo
 *.pyc
+*.whl
+*.gz
+build/*
+dist/*
