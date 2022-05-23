@@ -149,6 +149,6 @@ class Stitcher:
         sys.exit(1)
 
     def _assign_id(self, node_str):
-        if not self.node_to_id.get(node_str, None):
+        if self.node_to_id.get(node_str, None) is None:
             self.node_to_id[node_str] = self.id_cnt
             self.id_cnt += 1
