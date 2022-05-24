@@ -9,7 +9,7 @@ def get_long_desc():
 def setup_package():
     setup(
         name='pycg-stitch',
-        version='0.0.3',
+        version='0.0.8',
         description='Stitcher for FASTEN Python call graphs',
         long_description=get_long_desc(),
         long_description_content_type="text/markdown",
@@ -17,6 +17,7 @@ def setup_package():
         license='Apache Software License',
         packages=find_packages(),
         install_requires=['flask'],
+        include_package_data=True,
         entry_points = {
             'console_scripts': [
                 'pycg-stitch=stitcher.__main__:main',
