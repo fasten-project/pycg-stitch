@@ -9,7 +9,7 @@ def get_long_desc():
 def setup_package():
     setup(
         name='pycg-stitch',
-        version='0.0.8',
+        version='0.0.9',
         description='Stitcher for FASTEN Python call graphs',
         long_description=get_long_desc(),
         long_description_content_type="text/markdown",
