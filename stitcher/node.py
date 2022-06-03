@@ -70,7 +70,7 @@ class Node:
         uri = ""
         if not simple:
             uri += "fasten:"
-        uri += "//" + self.product
+        uri += "//" + "PyPI!" +self.product
         if self.version and not simple:
             uri += "$" + self.version
         uri += "/" + self.modname + "/" + self.callable
