@@ -69,8 +69,10 @@ class Node:
     def to_string(self, simple=False):
         uri = ""
         if not simple:
-            uri += "fasten:"
-        uri += "//" + "PyPI!" +self.product
+            uri += "fasten://PyPI!"
+        else:
+            uri += "//"
+        uri += self.product
         if self.version and not simple:
             uri += "$" + self.version
         uri += "/" + self.modname + "/" + self.callable

@@ -39,7 +39,7 @@ def main():
     stitcher = Stitcher(args.call_graph, args.simple)
     stitcher.stitch()
 
-    output = json.dumps(stitcher.output())
+    output = json.dumps(stitcher.output(), indent=2)
     if args.output:
         with open(args.output, "w+") as f:
             f.write(output)
