@@ -36,6 +36,7 @@ class Stitcher:
             "edges": [],
             "nodes": {}
         }
+        self.node_to_metadata = {}
 
         self.nodes_cnt = 0
         self.edges_cnt = 0
@@ -53,8 +54,8 @@ class Stitcher:
             self.resolved_cnt += len(internal_calls)
 
             for src, dst in internal_calls:
-                self._assign_id(src.to_string(self.simple))
-                self._assign_id(dst.to_string(self.simple))
+                self._assign_id(src.to_string(self.simple), src.get_metadata())
+                self._assign_id(dst.to_string(self.simple), dst.get_metadata())
                 self.stitched["edges"].append([
                     self.node_to_id[src.to_string(self.simple)],
                     self.node_to_id[dst.to_string(self.simple)],
@@ -65,8 +66,8 @@ class Stitcher:
                     self.edges_cnt_no_builtin -= 1
                 for resolved in self._resolve(dst):
                     self.resolved_cnt += 1
-                    self._assign_id(src.to_string(self.simple))
-                    self._assign_id(resolved.to_string(self.simple))
+                    self._assign_id(src.to_string(self.simple), src.get_metadata())
+                    self._assign_id(resolved.to_string(self.simple), resolved.get_metadata())
                     self.stitched["edges"].append([
                         self.node_to_id[src.to_string(self.simple)],
                         self.node_to_id[resolved.to_string(self.simple)],
@@ -74,7 +75,7 @@ class Stitcher:
 
         self.nodes_cnt = self.id_cnt
         for node, id in self.node_to_id.items():
-            self.stitched["nodes"][id] = {"URI": node, "metadata": {}}
+            self.stitched["nodes"][id] = {"URI": node, "metadata": self.node_to_metadata[node]}
 
     def output(self):
         return self.stitched
@@ -148,7 +149,8 @@ class Stitcher:
         print (msg)
         sys.exit(1)
 
-    def _assign_id(self, node_str):
+    def _assign_id(self, node_str, metadata):
         if self.node_to_id.get(node_str, None) is None:
             self.node_to_id[node_str] = self.id_cnt
+            self.node_to_metadata[node_str] = metadata
             self.id_cnt += 1

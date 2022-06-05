@@ -22,11 +22,13 @@
 # under the License.
 #
 class Node:
-    def __init__(self, uri_str, product=None, super_cls=None, version=None):
+    def __init__(self, uri_str, product=None, super_cls=None, version=None, first=None, last=None):
         self.uri_str = uri_str
         self.product = product
         self.version = version
         self.super_cls = super_cls or []
+        self.first = first
+        self.last=last
 
         if len(uri_str.split("/")) == 5:
             self.internal = False
@@ -65,6 +67,11 @@ class Node:
 
     def get_class_hier(self):
         return self.super_cls
+
+    def get_metadata(self):
+        return {"first": self.first,
+                "last":self.last
+        }
 
     def to_string(self, simple=False):
         uri = ""
