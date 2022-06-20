@@ -65,9 +65,14 @@ class CallGraph:
                         for cls in info["metadata"]["superClasses"]:
                             super_cls.append(Node(cls, product=self.product,
                                                         version=self.version))
+                    first = None
+                    last = None
+                    if info["metadata"].get("first", None) != None:
+                        first = info["metadata"].get("first")
+                        last = info["metadata"].get("last")
 
                     node = Node(info["namespace"], product=self.product,
-                                super_cls=super_cls, version=self.version)
+                                super_cls=super_cls, version=self.version, first=first, last=last)
 
                     self.id_to_node[id] = node
                     if node.get_modname():
